@@ -18,6 +18,7 @@ This document defines the 10-part MVP plan and tracks the detailed work required
 - [ ] Get user approval of the updated plan before starting code work.
 
 Success criteria:
+
 - `docs/PLAN.md` contains a detailed task list for all 10 parts.
 - `frontend/AGENTS.md` exists and documents current frontend components, state, and planned evolution.
 - The plan explicitly requires 80% frontend unit coverage.
@@ -30,11 +31,13 @@ Success criteria:
 - [x] Add a backend health endpoint and a static HTML endpoint for verification.
 
 Tests:
+
 - Run the backend locally and verify `GET /` returns static HTML.
 - Verify `GET /api/health` returns a success response.
 - Confirm Docker container starts and responds to both endpoints.
 
 Success criteria:
+
 - Backend starts successfully and serves example static content.
 - API health route works.
 - Docker build and run commands exist and are documented.
@@ -47,28 +50,32 @@ Success criteria:
 - [x] Add unit tests and integration checks for the static site build path.
 
 Tests:
+
 - Frontend build succeeds with `npm run build`.
 - Served root page includes the Kanban board and the `Kanban Studio` heading.
 - Unit tests cover board rendering and component-level behavior.
 
 Success criteria:
+
 - `GET /` returns the built frontend and shows the Kanban board.
 - Frontend unit test coverage is tracked and moving toward 80%.
 
 ## Part 4: Add fake user sign in experience
 
-- [ ] Add a login flow with dummy credentials: `user` / `password`.
-- [ ] Protect the Kanban route so users must log in first.
-- [ ] Add logout functionality and persistent session state in the browser.
-- [ ] Keep the user experience simple; no real auth backend required yet.
+- [x] Add a login flow with dummy credentials: `user` / `password`.
+- [x] Protect the Kanban route so users must log in first.
+- [x] Add logout functionality and persistent session state in the browser.
+- [x] Keep the user experience simple; no real auth backend required yet.
 
 Tests:
+
 - Login page renders and validates credentials.
 - Correct credentials allow access to the board.
 - Wrong credentials stay on the login page and show an error.
 - Logout returns the user to the login screen.
 
 Success criteria:
+
 - Unauthenticated users cannot see the Kanban board.
 - Login and logout work in the browser.
 - The login flow is covered by unit tests and at least one end-to-end test.
@@ -81,11 +88,13 @@ Success criteria:
 - [ ] Ensure the database file is created automatically when the app starts.
 
 Tests:
+
 - Schema definition is documented in `docs/`.
 - The backend can create and open the SQLite file.
 - Data read/write operations succeed on an empty database.
 
 Success criteria:
+
 - Database schema and approach are documented.
 - The app creates the database automatically.
 - Schema choice is approved before backend implementation.
@@ -98,11 +107,13 @@ Success criteria:
 - [ ] Add backend unit tests for API behavior and persistence.
 
 Tests:
+
 - `GET /api/board` returns the expected board JSON for the signed-in user.
 - `POST` or `PATCH` updates board state and persists it.
 - Invalid payloads return appropriate errors.
 
 Success criteria:
+
 - Backend API supports read/write of board state.
 - Backend tests cover API behavior and persistence logic.
 - The database is updated when the board changes.
@@ -115,11 +126,13 @@ Success criteria:
 - [ ] Keep the frontend responsive and fallback safely during load states.
 
 Tests:
+
 - Board state loads from backend on page load.
 - User actions update the board and persist through refresh.
 - API request failures are handled gracefully.
 
 Success criteria:
+
 - Frontend uses backend API for the Kanban board.
 - User actions persist across page reloads.
 - Frontend unit tests cover API integration logic.
@@ -131,10 +144,12 @@ Success criteria:
 - [ ] Verify that the backend can call OpenRouter successfully.
 
 Tests:
+
 - AI connectivity test returns a valid response for a simple prompt like `2+2`.
 - The backend handles API errors cleanly.
 
 Success criteria:
+
 - Backend can reach OpenRouter and return a valid AI response.
 - AI call behavior is covered by backend tests.
 
@@ -146,11 +161,13 @@ Success criteria:
 - [ ] Allow board updates from AI response to be returned via the backend.
 
 Tests:
+
 - Structured output parsing tests handle valid AI JSON responses.
 - Backend applies AI-suggested board updates correctly.
 - AI response payloads are validated before applying changes.
 
 Success criteria:
+
 - AI backend route returns both text and structured board update data.
 - The AI response format is documented.
 - The backend safely applies valid board updates.
@@ -163,11 +180,13 @@ Success criteria:
 - [ ] Ensure the chat UI is visually polished and simple.
 
 Tests:
+
 - Chat UI renders and sends messages.
 - AI responses appear in chat history.
 - AI-suggested board updates refresh the board.
 
 Success criteria:
+
 - The app has a working AI chat sidebar.
 - AI messages are visible and applied to the board when needed.
 - The integration is covered by frontend unit tests and at least one end-to-end flow.
