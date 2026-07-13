@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import { KanbanBoard } from "@/components/KanbanBoard";
-import { LoginPage } from "@/components/LoginPage";
-import { isAuthenticated, logout } from "@/lib/auth";
+import { useEffect, useState } from 'react';
+import { KanbanBoard } from '@/components/KanbanBoard';
+import { LoginPage } from '@/components/LoginPage';
+import { isAuthenticated, logout } from '@/lib/auth';
 
 export default function Home() {
   const [authenticated, setAuthenticated] = useState(false);

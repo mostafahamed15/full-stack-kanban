@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { login } from "@/lib/auth";
+import { useState } from 'react';
+import { login } from '@/lib/auth';
 
 export const LoginPage = ({ onSuccess }: { onSuccess: () => void }) => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -14,13 +14,15 @@ export const LoginPage = ({ onSuccess }: { onSuccess: () => void }) => {
       onSuccess();
       return;
     }
-    setError("Invalid credentials. Use user / password.");
+    setError('Invalid credentials. Use user / password.');
   };
 
   return (
     <main className="min-h-screen bg-[var(--surface)] px-6 py-12">
       <div className="mx-auto max-w-md rounded-[32px] border border-[var(--stroke)] bg-white/90 p-10 shadow-[var(--shadow)]">
-        <h1 className="text-3xl font-semibold text-[var(--navy-dark)]">Sign in</h1>
+        <h1 className="text-3xl font-semibold text-[var(--navy-dark)]">
+          Sign in
+        </h1>
         <p className="mt-3 text-sm text-[var(--gray-text)]">
           Use the dummy credentials to access the board.
         </p>
