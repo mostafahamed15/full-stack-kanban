@@ -101,10 +101,10 @@ Success criteria:
 
 ## Part 6: Backend API
 
-- [ ] Implement backend routes for reading and updating the Kanban board by user.
-- [ ] Add endpoints for: `GET /api/board`, `POST /api/board`, `PATCH /api/board`, and health checks.
-- [ ] Implement user scoping support in the backend so data can be saved per dummy user.
-- [ ] Add backend unit tests for API behavior and persistence.
+- [x] Implement backend routes for reading and updating the Kanban board by user.
+- [x] Add endpoints for: `GET /api/board`, `POST /api/board`, `PATCH /api/board`, and health checks.
+- [x] Implement user scoping support in the backend so data can be saved per dummy user.
+- [x] Add backend unit tests for API behavior and persistence.
 
 Tests:
 

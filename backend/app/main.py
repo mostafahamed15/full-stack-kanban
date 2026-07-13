@@ -1,10 +1,11 @@
 from pathlib import Path
 
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
-from backend.app.db import ensure_db
+from backend.app.db import ensure_db, get_or_create_board, upsert_board
+from backend.app.schemas import BoardData
 
 app = FastAPI(title="Project Management MVP Backend")
 
@@ -21,6 +22,21 @@ async def health():
 @app.get("/api/hello")
 async def hello():
     return {"message": "hello from backend"}
+
+
+@app.get("/api/board", response_model=BoardData)
+async def get_board(user_id: str = "user"):
+    board = get_or_create_board(user_id)
+    return board
+
+
+@app.patch("/api/board", response_model=BoardData)
+async def patch_board(board: BoardData, user_id: str = "user"):
+    try:
+        upsert_board(user_id, board.dict())
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=str(exc))
+    return board
 
 
 if frontend_out.exists():
