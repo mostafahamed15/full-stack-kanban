@@ -24,7 +24,7 @@ export default function Home() {
 
   return (
     <div>
-      <div className="absolute right-6 top-6">
+      <div className="absolute right-6 top-6 z-20">
         <button
           type="button"
           onClick={() => {
