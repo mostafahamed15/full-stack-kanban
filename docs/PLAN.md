@@ -24,10 +24,10 @@ Success criteria:
 
 ## Part 2: Scaffolding
 
-- [ ] Add backend skeleton in `backend/` with FastAPI and `uv` package management.
-- [ ] Create Docker files to run backend and serve static content.
-- [ ] Add `scripts/` start and stop scripts for Windows/macOS/Linux.
-- [ ] Add a backend health endpoint and a static HTML endpoint for verification.
+- [x] Add backend skeleton in `backend/` with FastAPI and `uv` package management.
+- [x] Create Docker files to run backend and serve static content.
+- [x] Add `scripts/` start and stop scripts for Windows/macOS/Linux.
+- [x] Add a backend health endpoint and a static HTML endpoint for verification.
 
 Tests:
 - Run the backend locally and verify `GET /` returns static HTML.
@@ -41,10 +41,10 @@ Success criteria:
 
 ## Part 3: Add in Frontend
 
-- [ ] Build the existing Next.js frontend into static assets.
-- [ ] Configure FastAPI to serve the built frontend from `/`.
-- [ ] Ensure the Kanban board page loads when the app is served from backend.
-- [ ] Add unit tests and integration checks for the static site build path.
+- [x] Build the existing Next.js frontend into static assets.
+- [x] Configure FastAPI to serve the built frontend from `/`.
+- [x] Ensure the Kanban board page loads when the app is served from backend.
+- [x] Add unit tests and integration checks for the static site build path.
 
 Tests:
 - Frontend build succeeds with `npm run build`.
