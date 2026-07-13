@@ -82,10 +82,10 @@ Success criteria:
 
 ## Part 5: Database modeling
 
-- [ ] Design a SQLite schema or JSON-based schema for board data.
-- [ ] Store board state as JSON inside SQLite to simplify the MVP.
-- [ ] Add documentation in `docs/` describing the schema and persistence strategy.
-- [ ] Ensure the database file is created automatically when the app starts.
+- [x] Design a SQLite schema or JSON-based schema for board data.
+- [x] Store board state as JSON inside SQLite to simplify the MVP.
+- [x] Add documentation in `docs/` describing the schema and persistence strategy.
+- [x] Ensure the database file is created automatically when the app starts.
 
 Tests:
 

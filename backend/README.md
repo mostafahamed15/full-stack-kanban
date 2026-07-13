@@ -28,6 +28,13 @@ docker run --rm -p 3000:3000 pm-backend
 
 The Dockerfile now builds the Next.js frontend and copies the generated `frontend/out` static export into the runtime image.
 
+## Database
+
+The backend uses SQLite to persist board state in `backend/data/kanban.db`.
+The database file and `boards` table are created automatically when the backend starts.
+
+See `docs/database.md` for schema and persistence details.
+
 ## Endpoints
 
 - `GET /` - serves the static frontend from `frontend/out`

@@ -4,7 +4,11 @@ from fastapi import FastAPI
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
+from backend.app.db import ensure_db
+
 app = FastAPI(title="Project Management MVP Backend")
+
+ensure_db()
 
 frontend_out = Path(__file__).resolve().parent.parent.parent / "frontend" / "out"
 
