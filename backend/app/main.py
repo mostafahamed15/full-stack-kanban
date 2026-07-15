@@ -8,6 +8,8 @@ from fastapi import FastAPI, HTTPException
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
+from pydantic import ValidationError
+
 backend_root = Path(__file__).resolve().parent.parent
 project_root = backend_root.parent
 for candidate in (str(project_root), str(backend_root)):
@@ -16,10 +18,10 @@ for candidate in (str(project_root), str(backend_root)):
 
 try:
     from backend.app.db import ensure_db, get_or_create_board, upsert_board
-    from backend.app.schemas import BoardData
+    from backend.app.schemas import AiBoardUpdate, AiChatResponse, BoardData
 except ModuleNotFoundError:
     from app.db import ensure_db, get_or_create_board, upsert_board
-    from app.schemas import BoardData
+    from app.schemas import AiBoardUpdate, AiChatResponse, BoardData
 
 app = FastAPI(title="Project Management MVP Backend")
 
@@ -86,6 +88,52 @@ async def ai_test(payload: dict):
 
     reply = payload.get("choices", [{}])[0].get("message", {}).get("content", "")
     return {"reply": reply, "model": "openai/gpt-oss-120b"}
+
+
+@app.post("/api/ai/chat", response_model=AiChatResponse)
+async def ai_chat(payload: dict, user_id: str = "user"):
+    if "prompt" not in payload:
+        raise HTTPException(status_code=422, detail="prompt is required")
+
+    prompt = payload.get("prompt", "")
+    api_key = os.getenv("OPENROUTER_API_KEY")
+
+    if not api_key:
+        raise HTTPException(status_code=500, detail="OPENROUTER_API_KEY is not configured")
+
+    request_body = {
+        "model": "openai/gpt-oss-120b",
+        "messages": [{"role": "user", "content": prompt}],
+    }
+
+    request = urllib.request.Request(
+        "https://openrouter.ai/api/v1/chat/completions",
+        data=json.dumps(request_body).encode("utf-8"),
+        headers={
+            "Authorization": f"Bearer {api_key}",
+            "Content-Type": "application/json",
+            "HTTP-Referer": "http://localhost:3000",
+            "X-Title": "Project Management MVP",
+        },
+        method="POST",
+    )
+
+    try:
+        with urllib.request.urlopen(request, timeout=20) as response:
+            payload = json.loads(response.read().decode("utf-8"))
+    except Exception as exc:
+        raise HTTPException(status_code=502, detail=str(exc))
+
+    content = payload.get("choices", [{}])[0].get("message", {}).get("content", "")
+    try:
+        parsed = json.loads(content)
+        ai_payload = AiBoardUpdate(**parsed.get("board_update", {}))
+    except (json.JSONDecodeError, ValidationError, TypeError):
+        return AiChatResponse(message=content or "I couldn't interpret that request.", applied=False)
+
+    board = ai_payload.dict()
+    upsert_board(user_id, board)
+    return AiChatResponse(message=parsed.get("message", "Board updated"), applied=True, board=BoardData(**board))
 
 
 if frontend_out.exists():

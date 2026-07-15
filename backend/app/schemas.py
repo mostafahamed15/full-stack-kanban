@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 
 class Card(BaseModel):
@@ -17,3 +17,14 @@ class Column(BaseModel):
 class BoardData(BaseModel):
     columns: List[Column]
     cards: Dict[str, Card]
+
+
+class AiBoardUpdate(BaseModel):
+    columns: List[Column]
+    cards: Dict[str, Card]
+
+
+class AiChatResponse(BaseModel):
+    message: str
+    applied: bool
+    board: Optional[BoardData] = None

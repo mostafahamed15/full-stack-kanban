@@ -155,22 +155,22 @@ Success criteria:
 
 ## Part 9: AI structured outputs
 
-- [ ] Define structured output format for AI chat responses.
-- [ ] Send the current board JSON, user question, and conversation context to the AI.
-- [ ] Parse AI responses into user-facing text and optional board updates.
-- [ ] Allow board updates from AI response to be returned via the backend.
+- [x] Define structured output format for AI chat responses.
+- [x] Send the current board JSON, user question, and conversation context to the AI.
+- [x] Parse AI responses into user-facing text and optional board updates.
+- [x] Allow board updates from AI response to be returned via the backend.
 
 Tests:
 
-- Structured output parsing tests handle valid AI JSON responses.
-- Backend applies AI-suggested board updates correctly.
-- AI response payloads are validated before applying changes.
+- [x] Structured output parsing tests handle valid AI JSON responses.
+- [x] Backend applies AI-suggested board updates correctly.
+- [x] AI response payloads are validated before applying changes.
 
 Success criteria:
 
-- AI backend route returns both text and structured board update data.
-- The AI response format is documented.
-- The backend safely applies valid board updates.
+- [x] AI backend route returns both text and structured board update data.
+- [x] The AI response format is documented.
+- [x] The backend safely applies valid board updates.
 
 ## Part 10: AI chat UI
 
