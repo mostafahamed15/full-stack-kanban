@@ -1,21 +1,54 @@
-import { render, screen, within } from "@testing-library/react";
+import { fireEvent, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { beforeEach, afterEach, describe, expect, it, vi } from "vitest";
 import { KanbanBoard } from "@/components/KanbanBoard";
+import { initialData, type BoardData } from "@/lib/kanban";
 
 const getFirstColumn = () => screen.getAllByTestId(/column-/i)[0];
 
+const createResponse = (body: BoardData) => ({
+  ok: true,
+  json: async () => body,
+});
+
 describe("KanbanBoard", () => {
-  it("renders five columns", () => {
+  const fetchMock = vi.fn();
+
+  beforeEach(() => {
+    vi.stubGlobal("fetch", fetchMock);
+    fetchMock.mockImplementation((input: RequestInfo | URL) => {
+      const url = typeof input === "string" ? input : input.toString();
+
+      if (url.includes("/api/board")) {
+        if (fetchMock.mock.calls.filter(([callUrl]) => callUrl === url).length === 0) {
+          return Promise.resolve(createResponse(initialData));
+        }
+
+        return Promise.resolve(createResponse(initialData));
+      }
+
+      return Promise.resolve({ ok: false, json: async () => ({ detail: "not found" }) });
+    });
+  });
+
+  afterEach(() => {
+    vi.unstubAllGlobals();
+    fetchMock.mockReset();
+  });
+
+  it("loads the board from the backend on mount", async () => {
     render(<KanbanBoard />);
-    expect(screen.getAllByTestId(/column-/i)).toHaveLength(5);
+
+    expect(fetchMock).toHaveBeenCalledWith("/api/board");
+    expect(await screen.findByText("Align roadmap themes")).toBeInTheDocument();
   });
 
   it("renames a column", async () => {
     render(<KanbanBoard />);
     const column = getFirstColumn();
     const input = within(column).getByLabelText("Column title");
-    await userEvent.clear(input);
-    await userEvent.type(input, "New Name");
+    fireEvent.change(input, { target: { value: "" } });
+    fireEvent.change(input, { target: { value: "New Name" } });
     expect(input).toHaveValue("New Name");
   });
 
@@ -42,5 +75,20 @@ describe("KanbanBoard", () => {
     await userEvent.click(deleteButton);
 
     expect(within(column).queryByText("New card")).not.toBeInTheDocument();
+  });
+
+  it("persists board changes to the backend", async () => {
+    render(<KanbanBoard />);
+    await screen.findByText("Align roadmap themes");
+
+    const column = getFirstColumn();
+    const input = within(column).getByLabelText("Column title");
+    await userEvent.clear(input);
+    await userEvent.type(input, "Renamed");
+
+    expect(fetchMock).toHaveBeenCalledWith(
+      "/api/board",
+      expect.objectContaining({ method: "PATCH" })
+    );
   });
 });

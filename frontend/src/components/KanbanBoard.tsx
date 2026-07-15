@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   DndContext,
   DragOverlay,
@@ -16,14 +16,81 @@ import { KanbanCardPreview } from "@/components/KanbanCardPreview";
 import { createId, initialData, moveCard, type BoardData } from "@/lib/kanban";
 
 export const KanbanBoard = () => {
-  const [board, setBoard] = useState<BoardData>(() => initialData);
+  const [board, setBoard] = useState<BoardData>(initialData);
   const [activeCardId, setActiveCardId] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const hasHydratedRef = useRef(false);
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: { distance: 6 },
     })
   );
+
+  useEffect(() => {
+    let isActive = true;
+
+    const loadBoard = async () => {
+      try {
+        const response = await fetch("/api/board");
+        if (!response.ok) {
+          throw new Error("Unable to load board");
+        }
+
+        const data = (await response.json()) as BoardData;
+        if (isActive) {
+          setBoard(data);
+          setErrorMessage(null);
+        }
+      } catch {
+        if (isActive) {
+          setErrorMessage("Using the local demo board while the server is unavailable.");
+        }
+      } finally {
+        if (isActive) {
+          setIsLoading(false);
+        }
+      }
+    };
+
+    void loadBoard();
+
+    return () => {
+      isActive = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    if (isLoading) {
+      return;
+    }
+
+    if (!hasHydratedRef.current) {
+      hasHydratedRef.current = true;
+      return;
+    }
+
+    const persistBoard = async () => {
+      try {
+        const response = await fetch("/api/board", {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(board),
+        });
+
+        if (!response.ok) {
+          throw new Error("Unable to save board");
+        }
+      } catch {
+        setErrorMessage("Changes could not be saved to the server.");
+      }
+    };
+
+    void persistBoard();
+  }, [board, isLoading]);
 
   const cardsById = useMemo(() => board.cards, [board.cards]);
 
@@ -118,6 +185,12 @@ export const KanbanBoard = () => {
               <p className="mt-2 text-lg font-semibold text-[var(--primary-blue)]">
                 One board. Five columns. Zero clutter.
               </p>
+              {isLoading ? (
+                <p className="mt-3 text-sm text-[var(--gray-text)]">Loading board…</p>
+              ) : null}
+              {errorMessage ? (
+                <p className="mt-3 text-sm text-[var(--accent-yellow)]">{errorMessage}</p>
+              ) : null}
             </div>
           </div>
           <div className="flex flex-wrap items-center gap-4">
