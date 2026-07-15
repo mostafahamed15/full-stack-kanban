@@ -120,22 +120,22 @@ Success criteria:
 
 ## Part 7: Frontend + Backend
 
-- [ ] Replace local board state with backend-backed data fetching.
-- [ ] Add API client utilities or hooks to fetch and mutate board state.
-- [ ] Sync column renaming, card creation, deletion, and drag/drop moves with the backend.
-- [ ] Keep the frontend responsive and fallback safely during load states.
+- [x] Replace local board state with backend-backed data fetching.
+- [x] Add API client utilities or hooks to fetch and mutate board state.
+- [x] Sync column renaming, card creation, deletion, and drag/drop moves with the backend.
+- [x] Keep the frontend responsive and fallback safely during load states.
 
 Tests:
 
-- Board state loads from backend on page load.
-- User actions update the board and persist through refresh.
-- API request failures are handled gracefully.
+- [x] Board state loads from backend on page load.
+- [x] User actions update the board and persist through refresh.
+- [x] API request failures are handled gracefully.
 
 Success criteria:
 
-- Frontend uses backend API for the Kanban board.
-- User actions persist across page reloads.
-- Frontend unit tests cover API integration logic.
+- [x] Frontend uses backend API for the Kanban board.
+- [x] User actions persist across page reloads.
+- [x] Frontend unit tests cover API integration logic.
 
 ## Part 8: AI connectivity
 
