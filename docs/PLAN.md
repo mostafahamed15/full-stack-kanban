@@ -139,19 +139,19 @@ Success criteria:
 
 ## Part 8: AI connectivity
 
-- [ ] Add backend integration with OpenRouter using `OPENROUTER_API_KEY`.
-- [ ] Implement a simple AI test endpoint such as `POST /api/ai/test` or `POST /api/ai/chat`.
-- [ ] Verify that the backend can call OpenRouter successfully.
+- [x] Add backend integration with OpenRouter using `OPENROUTER_API_KEY`.
+- [x] Implement a simple AI test endpoint such as `POST /api/ai/test` or `POST /api/ai/chat`.
+- [x] Verify that the backend can call OpenRouter successfully.
 
 Tests:
 
-- AI connectivity test returns a valid response for a simple prompt like `2+2`.
-- The backend handles API errors cleanly.
+- [x] AI connectivity test returns a valid response for a simple prompt like `2+2`.
+- [x] The backend handles API errors cleanly.
 
 Success criteria:
 
-- Backend can reach OpenRouter and return a valid AI response.
-- AI call behavior is covered by backend tests.
+- [x] Backend can reach OpenRouter and return a valid AI response.
+- [x] AI call behavior is covered by backend tests.
 
 ## Part 9: AI structured outputs
 
