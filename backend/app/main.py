@@ -4,8 +4,12 @@ from fastapi import FastAPI, HTTPException
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
-from backend.app.db import ensure_db, get_or_create_board, upsert_board
-from backend.app.schemas import BoardData
+try:
+    from backend.app.db import ensure_db, get_or_create_board, upsert_board
+    from backend.app.schemas import BoardData
+except ModuleNotFoundError:
+    from app.db import ensure_db, get_or_create_board, upsert_board
+    from app.schemas import BoardData
 
 app = FastAPI(title="Project Management MVP Backend")
 

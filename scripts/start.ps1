@@ -1,4 +1,4 @@
-$root = Split-Path -Parent $MyInvocation.MyCommand.Path
+$root = Split-Path -Parent $PSScriptRoot
 Set-Location $root
 Write-Host "Starting backend..."
-python -m uv run backend/app/main.py --reload --port 3000
+python -m uv run --directory backend uvicorn app.main:app --reload --port 3000
