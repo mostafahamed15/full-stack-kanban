@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   DndContext,
   DragOverlay,
@@ -10,10 +10,10 @@ import {
   closestCorners,
   type DragEndEvent,
   type DragStartEvent,
-} from "@dnd-kit/core";
-import { KanbanColumn } from "@/components/KanbanColumn";
-import { KanbanCardPreview } from "@/components/KanbanCardPreview";
-import { createId, initialData, moveCard, type BoardData } from "@/lib/kanban";
+} from '@dnd-kit/core';
+import { KanbanColumn } from '@/components/KanbanColumn';
+import { KanbanCardPreview } from '@/components/KanbanCardPreview';
+import { createId, initialData, moveCard, type BoardData } from '@/lib/kanban';
 
 export const KanbanBoard = () => {
   const [board, setBoard] = useState<BoardData>(initialData);
@@ -25,7 +25,7 @@ export const KanbanBoard = () => {
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: { distance: 6 },
-    })
+    }),
   );
 
   useEffect(() => {
@@ -33,9 +33,9 @@ export const KanbanBoard = () => {
 
     const loadBoard = async () => {
       try {
-        const response = await fetch("/api/board");
+        const response = await fetch('/api/board');
         if (!response.ok) {
-          throw new Error("Unable to load board");
+          throw new Error('Unable to load board');
         }
 
         const data = (await response.json()) as BoardData;
@@ -45,7 +45,9 @@ export const KanbanBoard = () => {
         }
       } catch {
         if (isActive) {
-          setErrorMessage("Using the local demo board while the server is unavailable.");
+          setErrorMessage(
+            'Using the local demo board while the server is unavailable.',
+          );
         }
       } finally {
         if (isActive) {
@@ -73,19 +75,19 @@ export const KanbanBoard = () => {
 
     const persistBoard = async () => {
       try {
-        const response = await fetch("/api/board", {
-          method: "PATCH",
+        const response = await fetch('/api/board', {
+          method: 'PATCH',
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
           body: JSON.stringify(board),
         });
 
         if (!response.ok) {
-          throw new Error("Unable to save board");
+          throw new Error('Unable to save board');
         }
       } catch {
-        setErrorMessage("Changes could not be saved to the server.");
+        setErrorMessage('Changes could not be saved to the server.');
       }
     };
 
@@ -116,23 +118,23 @@ export const KanbanBoard = () => {
     setBoard((prev) => ({
       ...prev,
       columns: prev.columns.map((column) =>
-        column.id === columnId ? { ...column, title } : column
+        column.id === columnId ? { ...column, title } : column,
       ),
     }));
   };
 
   const handleAddCard = (columnId: string, title: string, details: string) => {
-    const id = createId("card");
+    const id = createId('card');
     setBoard((prev) => ({
       ...prev,
       cards: {
         ...prev.cards,
-        [id]: { id, title, details: details || "No details yet." },
+        [id]: { id, title, details: details || 'No details yet.' },
       },
       columns: prev.columns.map((column) =>
         column.id === columnId
           ? { ...column, cardIds: [...column.cardIds, id] }
-          : column
+          : column,
       ),
     }));
   };
@@ -142,7 +144,7 @@ export const KanbanBoard = () => {
       return {
         ...prev,
         cards: Object.fromEntries(
-          Object.entries(prev.cards).filter(([id]) => id !== cardId)
+          Object.entries(prev.cards).filter(([id]) => id !== cardId),
         ),
         columns: prev.columns.map((column) =>
           column.id === columnId
@@ -150,7 +152,7 @@ export const KanbanBoard = () => {
                 ...column,
                 cardIds: column.cardIds.filter((id) => id !== cardId),
               }
-            : column
+            : column,
         ),
       };
     });
@@ -174,8 +176,9 @@ export const KanbanBoard = () => {
                 Kanban Studio
               </h1>
               <p className="mt-3 max-w-xl text-sm leading-6 text-[var(--gray-text)]">
-                Keep momentum visible. Rename columns, drag cards between stages,
-                and capture quick notes without getting buried in settings.
+                Keep momentum visible. Rename columns, drag cards between
+                stages, and capture quick notes without getting buried in
+                settings.
               </p>
             </div>
             <div className="rounded-2xl border border-[var(--stroke)] bg-[var(--surface)] px-5 py-4">
@@ -186,10 +189,14 @@ export const KanbanBoard = () => {
                 One board. Five columns. Zero clutter.
               </p>
               {isLoading ? (
-                <p className="mt-3 text-sm text-[var(--gray-text)]">Loading board…</p>
+                <p className="mt-3 text-sm text-[var(--gray-text)]">
+                  Loading board…
+                </p>
               ) : null}
               {errorMessage ? (
-                <p className="mt-3 text-sm text-[var(--accent-yellow)]">{errorMessage}</p>
+                <p className="mt-3 text-sm text-[var(--accent-yellow)]">
+                  {errorMessage}
+                </p>
               ) : null}
             </div>
           </div>

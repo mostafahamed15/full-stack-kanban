@@ -1,8 +1,15 @@
+import sys
 from pathlib import Path
 
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
+
+backend_root = Path(__file__).resolve().parent.parent
+project_root = backend_root.parent
+for candidate in (str(project_root), str(backend_root)):
+    if candidate not in sys.path:
+        sys.path.insert(0, candidate)
 
 try:
     from backend.app.db import ensure_db, get_or_create_board, upsert_board
