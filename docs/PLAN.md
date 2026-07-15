@@ -174,22 +174,22 @@ Success criteria:
 
 ## Part 10: AI chat UI
 
-- [ ] Add a sidebar chat UI for user/AI conversation.
-- [ ] Display recent chat messages, send button, and loading state.
-- [ ] Allow the backend to apply AI-proposed board changes and refresh UI automatically.
-- [ ] Ensure the chat UI is visually polished and simple.
+- [x] Add a sidebar chat UI for user/AI conversation.
+- [x] Display recent chat messages, send button, and loading state.
+- [x] Allow the backend to apply AI-proposed board changes and refresh UI automatically.
+- [x] Ensure the chat UI is visually polished and simple.
 
 Tests:
 
-- Chat UI renders and sends messages.
-- AI responses appear in chat history.
-- AI-suggested board updates refresh the board.
+- [x] Chat UI renders and sends messages in the main board experience.
+- [x] AI responses appear in chat history.
+- [x] AI-suggested board updates refresh the board.
 
 Success criteria:
 
-- The app has a working AI chat sidebar.
-- AI messages are visible and applied to the board when needed.
-- The integration is covered by frontend unit tests and at least one end-to-end flow.
+- [x] The app has a working AI chat sidebar.
+- [x] AI messages are visible and applied to the board when needed.
+- [ ] The integration is covered by dedicated frontend unit tests and at least one end-to-end flow.
 
 ## Quality checklist
 
