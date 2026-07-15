@@ -1,4 +1,7 @@
+import json
+import os
 import sys
+import urllib.request
 from pathlib import Path
 
 from fastapi import FastAPI, HTTPException
@@ -48,6 +51,41 @@ async def patch_board(board: BoardData, user_id: str = "user"):
     except Exception as exc:
         raise HTTPException(status_code=500, detail=str(exc))
     return board
+
+
+@app.post("/api/ai/test")
+async def ai_test(payload: dict):
+    prompt = payload.get("prompt", "")
+    api_key = os.getenv("OPENROUTER_API_KEY")
+
+    if not api_key:
+        raise HTTPException(status_code=500, detail="OPENROUTER_API_KEY is not configured")
+
+    request_body = {
+        "model": "openai/gpt-oss-120b",
+        "messages": [{"role": "user", "content": prompt}],
+    }
+
+    request = urllib.request.Request(
+        "https://openrouter.ai/api/v1/chat/completions",
+        data=json.dumps(request_body).encode("utf-8"),
+        headers={
+            "Authorization": f"Bearer {api_key}",
+            "Content-Type": "application/json",
+            "HTTP-Referer": "http://localhost:3000",
+            "X-Title": "Project Management MVP",
+        },
+        method="POST",
+    )
+
+    try:
+        with urllib.request.urlopen(request, timeout=20) as response:
+            payload = json.loads(response.read().decode("utf-8"))
+    except Exception as exc:
+        raise HTTPException(status_code=502, detail=str(exc))
+
+    reply = payload.get("choices", [{}])[0].get("message", {}).get("content", "")
+    return {"reply": reply, "model": "openai/gpt-oss-120b"}
 
 
 if frontend_out.exists():
